@@ -14,9 +14,9 @@ mvn install
 
 ```xml
 <dependency>
-    <groupId>io.github.teuton-software</groupId>
+	<groupId>io.github.teuton-software</groupId>
 	<artifactId>jteuton</artifactId>
-    <version>2.1.7</version>
+	<version>2.1.7</version>
 </dependency>
 ```
 
@@ -52,7 +52,7 @@ import io.github.teuton.Teuton;
 
 public class Sample {
 	public static void main(String[] args) {
-        String output = Teuton.execute("help");
+		String output = Teuton.execute("help");
 		System.out.println(output);
 	}
 }
@@ -69,4 +69,3 @@ Commands:
   teuton readme DIRECTORY           # Create README.md file from challenge co...
   teuton version                    # Show the program version
 ```
-
