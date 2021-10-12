@@ -8,7 +8,7 @@ public class TeutonTest {
 	
 	@Test
 	public void testVersion() {
-		assertEquals("teuton (version 2.1.7)\n", Teuton.execute("version"));
+		assertEquals("teuton (version 2.1.11)\n", Teuton.execute("version"));
 	}
 
 }
