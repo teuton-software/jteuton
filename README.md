@@ -1,8 +1,8 @@
 # jteuton
 
-All-in-one Java wrapper for [teuton](https://github.com/teuton-software/teuton)  (including JRuby).
+All-in-one Java wrapper for [teuton](https://github.com/teuton-software/teuton) Ruby gem (using JRuby).
 
-## How to compile and install jteuton library
+## How to compile and install jteuton to your local Maven repo
 
 ```bash
 git clone https://github.com/teuton-software/jteuton.git
@@ -16,30 +16,36 @@ mvn install
 <dependency>
 	<groupId>io.github.teuton-software</groupId>
 	<artifactId>jteuton</artifactId>
-	<version>2.1.7</version>
+	<version>2.1.11</version>
 </dependency>
 ```
 
 ## Usage examples
+
+Impot `Teuton` class:
+
+```java
+import io.github.teuton.Teuton;
+```
 
 ### Get teuton version
 
 Code:
 
 ```java
-import io.github.teuton.Teuton;
+System.out.println(Teuton.execute("version"));
+```
 
-public class Sample {
-	public static void main(String[] args) {
-		System.out.println(Teuton.execute("version"));
-	}
-}
+or
+
+```java
+System.out.println(Teuton.version());
 ```
 
 Output:
 
 ```
-teuton (version 2.1.7)
+teuton (version X.Y.Z)
 ```
 
 ### Get teuton help
@@ -48,14 +54,7 @@ teuton (version 2.1.7)
 Code:
 
 ```java
-import io.github.teuton.Teuton;
-
-public class Sample {
-	public static void main(String[] args) {
-		String output = Teuton.execute("help");
-		System.out.println(output);
-	}
-}
+System.out.println(Teuton.execute("help"));
 ```
 
 Output:
