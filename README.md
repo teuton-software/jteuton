@@ -1,16 +1,11 @@
 # jteuton
 
+[![Maven Central](http://img.shields.io/maven-central/v/io.github.teuton-software/jteuton)](https://search.maven.org/artifact/io.github.teuton-software/jteuton)
+[![GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-%250778B9.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
+
 All-in-one Java wrapper for [teuton](https://github.com/teuton-software/teuton) Ruby gem (using JRuby).
 
-## How to compile and install jteuton to your local Maven repo
-
-```bash
-git clone https://github.com/teuton-software/jteuton.git
-cd jteuton
-mvn install
-```
-
-## Adding jteuton library to POM
+## Using jteuton library with Maven
 
 ```xml
 <dependency>
@@ -18,6 +13,20 @@ mvn install
 	<artifactId>jteuton</artifactId>
 	<version>2.1.11</version>
 </dependency>
+```
+
+## Using jteuton library with Gradle
+
+```groovy
+implementation 'io.github.teuton-software:jteuton:2.1.11'
+```
+
+## How to compile and install jteuton to your local Maven repo
+
+```bash
+git clone https://github.com/teuton-software/jteuton.git
+cd jteuton
+mvn install
 ```
 
 ## Usage examples
