@@ -2,7 +2,6 @@ package io.github.teuton;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
@@ -24,30 +23,46 @@ public class Teuton {
 	private static final Pattern VERSION_PATTERN = Pattern.compile(".*\\(version *(.*)\\).*");
 
 	@SuppressWarnings("unchecked")
-	private static Writer ruby(Writer writer, String rubyfile, File currentDirectory, String ... args) {
+	private static Writer ruby(Writer outputWriter, Writer errorWriter, String rubyfile, File currentDirectory, String ... args) {
 		ScriptingContainer container = new ScriptingContainer(LocalContextScope.SINGLETHREAD);
 		if (currentDirectory != null) {
 			container.setCurrentDirectory(currentDirectory.getAbsolutePath());
 		}
-		container.getEnvironment().put("GEM_PATH", "classpath:/rubygems");
+		container.getEnvironment().put("GEM_PATH", "uri:classloader:/rubygems");
 		container.setArgv(args);
-		container.setOutput(writer);
-		container.setError(writer);
+		container.setOutput(outputWriter);
+		container.setError(errorWriter);
 		container.runScriptlet(PathType.CLASSPATH, rubyfile);
-		return writer;
+		return outputWriter;
+	}
+	
+	private static Writer ruby(Writer outputWriter, String rubyfile, File currentDirectory, String ... args) {
+		return ruby(outputWriter, outputWriter, rubyfile, currentDirectory, args);
 	}
 
-	private static InputStream ruby(String rubyfile, File currentDirectory, String ... args) throws IOException {
-		PipedInputStream pis = new PipedInputStream();
-		PipedOutputStream pos = new PipedOutputStream(pis);
-		Writer writer = new OutputStreamWriter(pos);
-		writer.write(currentDirectory.getAbsolutePath() + "$ " + rubyfile + " " + StringUtils.join(args, " ") + "\n\n");
-		new Thread(() -> ruby(writer, TEUTON_PATH, currentDirectory, args)).start();
-		return pis;
+	private static TeutonExecution ruby(String rubyfile, File currentDirectory, String ... args) throws IOException {
+				
+		PipedInputStream outputInputStream = new PipedInputStream();		
+		Writer outputWriter = new OutputStreamWriter(new PipedOutputStream(outputInputStream));
+
+		PipedInputStream errorInputStream = new PipedInputStream();		
+		Writer errorWriter = new OutputStreamWriter(new PipedOutputStream(errorInputStream));
+
+		Thread thread = new Thread(() -> ruby(outputWriter, errorWriter, TEUTON_PATH, currentDirectory, args));
+		
+		TeutonExecution result = new TeutonExecution();
+		result.setCommand(currentDirectory.getAbsolutePath() + "$ " + rubyfile + " " + StringUtils.join(args, " "));
+		result.setOutput(outputInputStream);
+		result.setError(errorInputStream);
+		result.setThread(thread);
+		
+		thread.start();
+		
+		return result;
 	}
 
-	private static String ruby(String rubyfile, String ... args) {
-		return ruby(new StringWriter(), rubyfile, null, args).toString();
+	private static String ruby(String rubyFile, String ... args) {
+		return ruby(new StringWriter(), rubyFile, null, args).toString();
 	}
 
 	private static String execute(File currentDirectory, String ... args) {
@@ -71,7 +86,7 @@ public class Teuton {
 		return execute(challengeDirectory, "readme", ".");
 	}
 	
-	public static InputStream play(File challengeDirectory, File configFile, File workingDirectory, List<String> casesId) throws IOException {
+	public static TeutonExecution play(File challengeDirectory, File configFile, File workingDirectory, List<String> casesId) throws IOException {
 		List<String> args = new ArrayList<>();
 		args.add("play");
 		args.add("--no-color");
