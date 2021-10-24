@@ -11,14 +11,14 @@ All-in-one Java wrapper for [teuton](https://github.com/teuton-software/teuton) 
 <dependency>
 	<groupId>io.github.teuton-software</groupId>
 	<artifactId>jteuton</artifactId>
-	<version>{teuton.version}</version>
+	<version>{jteuton.version}</version>
 </dependency>
 ```
 
 ## Using jteuton library with Gradle
 
 ```groovy
-implementation 'io.github.teuton-software:jteuton:{teuton.version}'
+implementation 'io.github.teuton-software:jteuton:{jteuton.version}'
 ```
 
 ## How to compile and install jteuton to your local Maven repo
