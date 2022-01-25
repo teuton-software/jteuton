@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class Teuton extends Thread {
+public class Teuton {
 	
 	private static final String TEUTON_PATH = "rubygems/bin/teuton"; 
 	private static final Pattern VERSION_PATTERN = Pattern.compile(".*\\(version *(.*)\\).*");
@@ -34,9 +34,9 @@ public class Teuton extends Thread {
 		return execute(challengeDirectory, "readme", ".");
 	}
 	
-	public static Thread play(File challengeDirectory, File configFile, File outputDirectory, List<String> casesId, Consumer<String> output, Consumer<String> error) throws IOException {
+	public static Thread run(File challengeDirectory, File configFile, File outputDirectory, List<String> casesId, Consumer<String> output, Consumer<String> error) throws IOException {
 		List<String> args = new ArrayList<>();
-		args.add("play");
+		args.add("run");
 		args.add("--no-color");
 		if (configFile != null) {
 			args.add("--cpath=" + configFile.getAbsolutePath());
@@ -46,7 +46,7 @@ public class Teuton extends Thread {
 		}
 		args.add("--export=json");
 		args.add(challengeDirectory.getAbsolutePath());
-		return Ruby.run(TEUTON_PATH, output, error, outputDirectory, args.toArray(new String[args.size()]));		
+		return Ruby.run(TEUTON_PATH, output, error, outputDirectory, args.toArray(new String[0]));		
 	}
 	
 }
