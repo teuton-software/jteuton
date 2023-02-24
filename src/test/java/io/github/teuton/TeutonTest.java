@@ -12,6 +12,9 @@ import org.junit.Test;
 
 public class TeutonTest {
 	
+	private File challenge = new File("src/test/resources/challenge");
+
+	
 	@Test
 	public void testVersion() {
 		assertEquals("2.4.5", Teuton.version());
@@ -37,20 +40,23 @@ public class TeutonTest {
 	
 	@Test
 	public void testReadme() {
-		File challenge = new File("src/test/resources/challenge");
 		assertThat(Teuton.readme(challenge), containsString("# challenge"));
 	}
 
 	@Test
 	public void testCheckSuccess() throws Exception {
-		File challenge = new File("src/test/resources/challenge");
 		assertThat(Teuton.check(challenge), containsString("GROUP: test"));
 	}
 	
 	@Test(expected = Exception.class)
 	public void testCheckFail() throws Exception {
-		File challenge = new File("src/test/resources/not-exists");
-		Teuton.check(challenge);
+		File notExist = new File("src/test/resources/not-exist");
+		Teuton.check(notExist);
+	}
+	
+	@Test
+	public void testPanelConfig() {
+		assertThat(Teuton.getPanelConfig(challenge), containsString(":global:"));
 	}
 
 	
