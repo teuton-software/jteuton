@@ -1,4 +1,4 @@
-package io.github.teuton;
+package io.github.teuton.ruby;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,10 +9,12 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.function.Consumer;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jruby.embed.LocalContextScope;
 import org.jruby.embed.PathType;
 import org.jruby.embed.ScriptingContainer;
 
+import io.github.teuton.ExecutionResult;
 import io.github.teuton.utils.StreamCharacterConsumer;
 
 public class Ruby {
@@ -45,7 +47,7 @@ public class Ruby {
 		return run(rubyFile, null, args).toString();
 	}
 
-	public static Thread run(String rubyFile, Consumer<String> output, Consumer<String> error, File currentDirectory, String ... args) throws IOException {
+	public static ExecutionResult run(String rubyFile, Consumer<String> output, Consumer<String> error, File currentDirectory, String ... args) throws IOException {
 		
 		PipedInputStream outputInputStream = new PipedInputStream();		
 		StreamCharacterConsumer outputConsumer = new StreamCharacterConsumer(outputInputStream, output);		
@@ -54,7 +56,7 @@ public class Ruby {
 		PipedInputStream errorInputStream = new PipedInputStream();		
 		StreamCharacterConsumer errorConsumer = new StreamCharacterConsumer(errorInputStream, error);
 		Writer errorWriter = new OutputStreamWriter(new PipedOutputStream(errorInputStream));
-					
+		
 		Thread thread = new Thread(() -> {
 			outputConsumer.start();
 			errorConsumer.start();
@@ -64,8 +66,8 @@ public class Ruby {
 		});
 		thread.setName(rubyFile);
 		thread.start();
-	
-		return thread;
+
+		return new ExecutionResult(rubyFile + " " + StringUtils.join(args, " "), thread, outputInputStream, errorInputStream);
 	}
 
 }

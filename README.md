@@ -9,9 +9,9 @@ All-in-one Java wrapper for [teuton](https://github.com/teuton-software/teuton) 
 
 ```xml
 <dependency>
-	<groupId>io.github.teuton-software</groupId>
-	<artifactId>jteuton</artifactId>
-	<version>{jteuton.version}</version>
+    <groupId>io.github.teuton-software</groupId>
+    <artifactId>jteuton</artifactId>
+    <version>{jteuton.version}</version>
 </dependency>
 ```
 
@@ -23,21 +23,54 @@ implementation 'io.github.teuton-software:jteuton:{jteuton.version}'
 
 ## How to compile and install jteuton to your local Maven repo
 
+Clone the repo and change to its directory:
+
 ```bash
 git clone https://github.com/teuton-software/jteuton.git
 cd jteuton
+```
+
+Download and install Ruby gems (`teuton` and `teuton-get`) into `src/main/resources`:
+
+```bash
+mvn exec:exec@install-rubygems
+```
+
+Build, package and install the JAR library into your local Maven repo:
+
+```bash
 mvn install
 ```
 
-## Usage examples
+## Upgrade Ruby gems
 
-Impot `Teuton` class:
+`jteuton` depends on some Ruby gems: `teuton` and `teuton-get`.
+
+### Install Ruby gems
+
+```bash
+mvn exec:exec@install-rubygems
+```
+
+### Uninstall Ruby gems
+
+```bash
+mvn clean:clean@uninstall-rubygems
+```
+
+> Also deletes `target`directory.
+
+## Usage examples:
+
+### teuton
+
+Import `Teuton` class:
 
 ```java
 import io.github.teuton.Teuton;
 ```
 
-### Get teuton version
+#### Get version
 
 Code:
 
@@ -54,11 +87,10 @@ System.out.println(Teuton.version());
 Output:
 
 ```
-teuton (version X.Y.Z)
+X.Y.Z
 ```
 
-### Get teuton help
-
+#### Get help
 
 Code:
 
@@ -76,4 +108,32 @@ Commands:
   teuton new DIRECTORY              # Create skeleton for a new project
   teuton readme DIRECTORY           # Create README.md file from challenge co...
   teuton version                    # Show the program version
+```
+
+### teuton-get
+
+Import `TeutonGet` class:
+
+```java
+import io.github.teuton.TeutonGet;
+```
+
+#### Get version
+
+Code:
+
+```java
+System.out.println(TeutonGet.execute("version"));
+```
+
+or
+
+```java
+System.out.println(TeutonGet.version());
+```
+
+Output:
+
+```
+X.Y.Z
 ```

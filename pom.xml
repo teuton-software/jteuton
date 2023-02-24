@@ -6,17 +6,18 @@
 
 	<groupId>io.github.teuton-software</groupId>
 	<artifactId>jteuton</artifactId>
-	<version>2.2.0</version>
+	<version>2.4.5</version>
 
 	<name>jteuton</name>
-	<description>All-in-one Java wrapper for teuton Rubygem (using JRuby)</description>
+	<description>All-in-one Java wrapper for "teuton" Rubygems (using JRuby)</description>
 	<url>https://github.com/teuton-software/jteuton</url>
 
 	<properties>
 		<maven.compiler.target>11</maven.compiler.target>
 		<maven.compiler.source>11</maven.compiler.source>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<teuton.version>2.2.0</teuton.version>
+		<teuton.version>2.4.5</teuton.version>
+		<teuton-get.version>0.2.4</teuton-get.version>
 	</properties>
 
 	<licenses>
@@ -41,37 +42,11 @@
 		<tag>v${project.version}</tag>
 	</scm>
 
-	<repositories>
-		<repository>
-			<id>rubygems-proxy</id>
-			<name>Rubygems Proxy</name>
-			<url>http://rubygems-proxy.torquebox.org/releases</url>
-			<layout>default</layout>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-				<updatePolicy>never</updatePolicy>
-			</snapshots>
-		</repository>
-	</repositories>
-
 	<dependencies>
-		<!-- 
-		<dependency>
-			<groupId>rubygems</groupId>
-			<artifactId>teuton</artifactId>
-			<version>${teuton.version}</version>
-			<type>gem</type>
-			<scope>compile</scope>
-			<optional>true</optional>
-		</dependency>
-		 -->
 		<dependency>
 			<groupId>org.jruby</groupId>
 			<artifactId>jruby-complete</artifactId>
-			<version>9.3.1.0</version>
+			<version>9.4.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
@@ -93,52 +68,52 @@
 
 	<build>
 		<plugins>
-			<!-- download and install rubygems -->
-			<!-- 
+			<!-- remove rubygems -->
 			<plugin>
-				<groupId>de.saumya.mojo</groupId>
-				<artifactId>gem-maven-plugin</artifactId>
-				<version>2.0.0-1</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>3.2.0</version>
+				<executions>
+					<execution>
+						<id>uninstall-rubygems</id>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+						<configuration>
+							<filesets>
+								<fileset>
+									<directory>${basedir}/src/main/resources/rubygems</directory>
+								</fileset>
+							</filesets>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- download and install rubygems [requires ruby] -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>3.1.0</version>
 				<executions>
 					<execution>
 						<id>install-rubygems</id>
-						<phase>generate-resources</phase>
 						<goals>
-							<goal>initialize</goal>
+							<goal>exec</goal>
 						</goals>
 						<configuration>
-							<installRDoc>false</installRDoc>
-							<installRI>false</installRI>
+							<executable>gem</executable>
+							<arguments>
+								<argument>install</argument>
+								<argument>--install-dir</argument>
+								<argument>${basedir}/src/main/resources/rubygems</argument>
+								<argument>--no-document</argument>
+								<argument>teuton:${teuton.version}</argument>
+								<argument>teuton-get:${teuton-get.version}</argument>
+							</arguments>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
-			 -->
-			<!-- copy rubygems to resources -->
-			<!-- 
-			<plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.6</version>
-				<executions>
-					<execution>
-						<id>copy-rubygems-to-resources</id>
-						<phase>generate-resources</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${basedir}/src/main/resources/rubygems</outputDirectory>
-							<encoding>UTF-8</encoding>
-							<resources>
-								<resource>
-									<directory>${basedir}/target/rubygems/</directory>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			 -->
 			<!-- generate source jar -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
