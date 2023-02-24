@@ -93,8 +93,12 @@ public class Teuton {
 		return check(directory, false);
 	}
 	
-	public static String getPanelConfig(File directory) throws Exception {
-		return check(directory, true);
+	public static String getPanelConfig(File directory) {
+		try { 
+			return check(directory, true);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 	
 }
