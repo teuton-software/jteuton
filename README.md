@@ -60,6 +60,12 @@ mvn clean:clean@uninstall-rubygems
 
 > Also deletes `target`directory.
 
+### Reload all Ruby gems
+
+```bash
+mvn clean:clean@uninstall-rubygems
+```
+
 ## Usage examples:
 
 ### teuton
