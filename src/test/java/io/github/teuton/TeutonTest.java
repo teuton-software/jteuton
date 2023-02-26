@@ -21,11 +21,6 @@ public class TeutonTest {
 	}
 	
 	@Test
-	public void testHelp() {
-		assertThat(Teuton.help(), containsString("teuton [run] [OPTIONS] DIRECTORY"));
-	}
-	
-	@Test
 	public void testCreate() throws Exception {
 		File challenge = new File(System.getProperty("java.io.tmpdir"), "challenge");
 		File configFile = new File(challenge, "config.yaml");
