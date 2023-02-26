@@ -1,8 +1,8 @@
-package io.github.teuton.utils;
+package io.github.teuton.jteuton.utils;
 
 public class StringUtils {
 	
-	public static String removeColorCodes(String input) {
+	public static String clearColorCodes(String input) {
 		return input.replaceAll("\u001B\\[[;\\d]*m", "");
 	}
 	

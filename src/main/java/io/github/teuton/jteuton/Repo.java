@@ -1,9 +1,9 @@
-package io.github.teuton;
+package io.github.teuton.jteuton;
 
 import java.net.URL;
 import java.util.Map;
 
-import io.github.teuton.utils.URLUtils;
+import io.github.teuton.jteuton.utils.URLUtils;
 
 public class Repo {
 

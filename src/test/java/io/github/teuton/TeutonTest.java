@@ -10,6 +10,8 @@ import java.io.File;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
+import io.github.teuton.jteuton.Teuton;
+
 public class TeutonTest {
 	
 	private File challenge = new File("src/test/resources/challenge");

@@ -1,4 +1,4 @@
-package io.github.teuton;
+package io.github.teuton.jteuton;
 
 import java.io.File;
 import java.io.FileNotFoundException;

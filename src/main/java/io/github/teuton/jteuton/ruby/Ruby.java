@@ -1,4 +1,4 @@
-package io.github.teuton.ruby;
+package io.github.teuton.jteuton.ruby;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,8 +14,8 @@ import org.jruby.embed.LocalContextScope;
 import org.jruby.embed.PathType;
 import org.jruby.embed.ScriptingContainer;
 
-import io.github.teuton.ExecutionResult;
-import io.github.teuton.utils.StreamCharacterConsumer;
+import io.github.teuton.jteuton.ExecutionResult;
+import io.github.teuton.jteuton.utils.StreamCharacterConsumer;
 
 public class Ruby {
 	

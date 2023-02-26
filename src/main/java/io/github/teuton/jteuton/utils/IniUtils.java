@@ -1,4 +1,4 @@
-package io.github.teuton.utils;
+package io.github.teuton.jteuton.utils;
 
 import java.io.File;
 import java.io.IOException;

@@ -1,11 +1,12 @@
-package io.github.teuton;
+package io.github.teuton.jteuton;
 
-import static io.github.teuton.utils.StringUtils.dosToUnix;
-import static io.github.teuton.utils.StringUtils.removeColorCodes;
+import static io.github.teuton.jteuton.utils.StringUtils.clearColorCodes;
+import static io.github.teuton.jteuton.utils.StringUtils.dosToUnix;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -21,8 +22,8 @@ import org.apache.commons.lang3.StringUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
-import io.github.teuton.ruby.Ruby;
-import io.github.teuton.utils.IniUtils;
+import io.github.teuton.jteuton.ruby.Ruby;
+import io.github.teuton.jteuton.utils.IniUtils;
 
 public class TeutonGet {
 
@@ -53,33 +54,50 @@ public class TeutonGet {
 	public static void refresh() {
 		execute("refresh");
 	}
+	
+	public static File download(File destinationDir, String repoName, String testId) throws Exception {		
+		Writer errorWriter = new StringWriter();
+		String output = Ruby.run(
+				BIN_PATH,						// teuton-get bin path 
+				new StringWriter(), 			// output writer
+				errorWriter, 					// error writer
+				destinationDir, 				// working directory
+				"download", 					// teuton command: "download"
+				repoName + ":" + testId			// full testId
+		).toString();
+		output = clearColorCodes(output.trim());
+		if (output.contains("ERROR")) {
+			throw new Exception(output);
+		}
+		return new File(destinationDir.getCanonicalFile(), testId.replaceAll("/", "_"));
+	}
 
-	public static List<Test> search(String repoName, String filter) {
+	public static List<SearchResult> search(String repoName, String filter) {
 		filter = (!StringUtils.isBlank(repoName) ? repoName + ":" : "") + filter;
 		String output = execute("search", filter);
-		output = removeColorCodes(output);
+		output = clearColorCodes(output);
 		output = dosToUnix(output);
 		return Arrays.asList(output.split("\n"))
 			.stream()
+			.filter(SEARCH_PATTERN.asMatchPredicate()::test)
 			.map(line -> {
 				Matcher m = SEARCH_PATTERN.matcher(line);
 				if (m.matches()) {
-//					int matches = Integer.parseInt(m.group(1)); 
+					int matches = Integer.parseInt(m.group(1)); 
 					String name = m.group(2);
 					String testId = m.group(3);
-					return new Test(testId, name);
-				}
+					return new SearchResult(matches, name, testId);
+				} 
 				return null;
 			})
-			.filter(test -> test != null)
 			.collect(Collectors.toList());
 	}
 
-	public static List<Test> search(String filter) {
+	public static List<SearchResult> search(String filter) {
 		return search(null, filter);
 	}
 	
-	public static List<Test> getAllTests() {
+	public static List<SearchResult> getAllTests() {
 		return search("ALL", "ALL");
 	}
 
@@ -87,7 +105,7 @@ public class TeutonGet {
 	public static Test getInfo(String repoName, String testId) throws Exception {
 		
 		String output = execute("info", repoName + ":" + testId);
-		output = removeColorCodes(output);
+		output = clearColorCodes(output);
 		
 		Map<String, String> info = YAML_MAPPER.readValue(output, Map.class);
 		
@@ -139,8 +157,14 @@ public class TeutonGet {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		Test test = getInfo("teuton.es", "sistemas.3/scripting/usermin");
-		System.out.println(test);
+//		Test test = getInfo("teuton.es", "sistemas.3/scripting/usermin");
+//		System.out.println(test);
+		
+		List<SearchResult> results = search("teuton.es", "user");		
+		System.out.println(results);
+//		System.out.println(getInfo(result.getRepoName(), result.getTestId()));
+//		System.out.println(download(new File("."), result.getRepoName(), result.getTestId()));
+		
 	}
 
 }

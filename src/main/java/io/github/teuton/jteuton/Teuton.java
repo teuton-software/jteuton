@@ -1,4 +1,4 @@
-package io.github.teuton;
+package io.github.teuton.jteuton;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
-import io.github.teuton.ruby.Ruby;
+import io.github.teuton.jteuton.ruby.Ruby;
 
 public class Teuton {
 	

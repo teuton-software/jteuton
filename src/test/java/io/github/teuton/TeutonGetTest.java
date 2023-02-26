@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import io.github.teuton.jteuton.TeutonGet;
+
 public class TeutonGetTest {
 	
 	@Test

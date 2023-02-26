@@ -1,4 +1,4 @@
-package io.github.teuton.utils;
+package io.github.teuton.jteuton.utils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
