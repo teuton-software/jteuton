@@ -56,14 +56,6 @@ public class Teuton {
 		return execute(workingDirectory, "readme", ".");
 	}
 	
-	public static String help(String command) {
-		return execute("help", command);
-	}
-	
-	public static String help() {
-		return execute("help");
-	}
-	
 	public static String create(File directory) {
 		return execute("new", directory.getAbsolutePath());
 	}
