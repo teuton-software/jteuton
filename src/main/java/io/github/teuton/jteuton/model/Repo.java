@@ -1,4 +1,4 @@
-package io.github.teuton.jteuton;
+package io.github.teuton.jteuton.model;
 
 import java.net.URL;
 import java.util.Map;

@@ -22,6 +22,9 @@ import org.apache.commons.lang3.StringUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
+import io.github.teuton.jteuton.model.Repo;
+import io.github.teuton.jteuton.model.SearchResult;
+import io.github.teuton.jteuton.model.Test;
 import io.github.teuton.jteuton.ruby.Ruby;
 import io.github.teuton.jteuton.utils.IniUtils;
 

@@ -28,7 +28,7 @@ public class Teuton {
 
 	public static String execute(String ... args) {
 		return Ruby.run(BIN_PATH, args);
-	}	
+	}
 
 	public static ExecutionResult run(File workingDirectory, File configFile, File outputDirectory, List<String> casesId, Consumer<String> output, Consumer<String> error) throws IOException {
 		List<String> args = Arrays.asList(
