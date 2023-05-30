@@ -29,7 +29,7 @@ public class TeutonGet {
 
 	private static final ObjectMapper YAML_MAPPER = new ObjectMapper(new YAMLFactory());
 	private static final String BIN_PATH = "rubygems/bin/teutonget";
-	private static final Pattern VERSION_PATTERN = Pattern.compile("teutonget \\(version *(.*)\\).*");
+	private static final Pattern VERSION_PATTERN = Pattern.compile("teutonget version (.*).*");
 	private static final Pattern SEARCH_PATTERN = Pattern.compile("^\\(x(\\d+)\\) (.*):(.*)$");
 	private static final File INI_FILE = new File(System.getProperty("user.home"), ".config/teuton/repos.ini");
 
@@ -79,7 +79,7 @@ public class TeutonGet {
 		output = dosToUnix(output);
 		return Arrays.asList(output.split("\n"))
 			.stream()
-			.filter(SEARCH_PATTERN.asMatchPredicate()::test)
+			.filter(SEARCH_PATTERN.asPredicate()::test)
 			.map(line -> {
 				Matcher m = SEARCH_PATTERN.matcher(line);
 				if (m.matches()) {

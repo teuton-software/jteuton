@@ -6,6 +6,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.util.ResourceBundle;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
@@ -14,12 +15,12 @@ import io.github.teuton.jteuton.Teuton;
 
 public class TeutonTest {
 	
-	private File challenge = new File("src/test/resources/challenge");
+	private static final File CHALLENGE = new File("src/test/resources/challenge");
+	private static final String VERSION = ResourceBundle.getBundle("jteuton").getString("teuton.version");
 
-	
 	@Test
 	public void testVersion() {
-		assertEquals("2.4.5", Teuton.version());
+		assertEquals(VERSION, Teuton.version());
 	}
 	
 	@Test
@@ -37,12 +38,12 @@ public class TeutonTest {
 	
 	@Test
 	public void testReadme() {
-		assertThat(Teuton.readme(challenge), containsString("# challenge"));
+		assertThat(Teuton.readme(CHALLENGE), containsString("# challenge"));
 	}
 
 	@Test
 	public void testCheckSuccess() throws Exception {
-		assertThat(Teuton.check(challenge), containsString("GROUP: test"));
+		assertThat(Teuton.check(CHALLENGE), containsString("GROUP: test"));
 	}
 	
 	@Test(expected = Exception.class)
@@ -53,7 +54,7 @@ public class TeutonTest {
 	
 	@Test
 	public void testPanelConfig() {
-		assertThat(Teuton.getPanelConfig(challenge), containsString(":global:"));
+		assertThat(Teuton.getPanelConfig(CHALLENGE), containsString(":global:"));
 	}
 
 	

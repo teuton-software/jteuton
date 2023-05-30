@@ -60,7 +60,7 @@ public class Teuton {
 		return execute("new", directory.getAbsolutePath());
 	}
 	
-	public static String check(File directory, boolean panelConfig) throws Exception {
+	public static String check(File directory, boolean onlyConfig) throws Exception {
 		Writer errorWriter = new StringWriter();
 		String output = Ruby.run(
 				BIN_PATH,						// teuton bin path 
@@ -69,7 +69,7 @@ public class Teuton {
 				null, 							// working directory
 				"check", 						// teuton command
 				directory.getAbsolutePath(), 	// directory (check command argument)
-				panelConfig ? "--panelconfig" : "--no-panelconfig"	// panel config or not panel config
+				onlyConfig ? "--onlyconfig" : "--no-onlyconfig"
 		).toString();		
 		String error = errorWriter.toString();
 		if (error.isEmpty() && output.contains("[ERROR]")) {
