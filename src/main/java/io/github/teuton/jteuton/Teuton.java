@@ -4,14 +4,17 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 
+import io.github.teuton.jteuton.ruby.ExecutionResult;
 import io.github.teuton.jteuton.ruby.Ruby;
 
 public class Teuton {
@@ -28,17 +31,17 @@ public class Teuton {
 	}	
 
 	public static ExecutionResult run(File workingDirectory, File configFile, File outputDirectory, List<String> casesId, Consumer<String> output, Consumer<String> error) throws IOException {
-		List<String> args = new ArrayList<>();
-		args.add("run");
-		args.add("--no-color");
-		if (configFile != null) {
-			args.add("--cpath=" + configFile.getAbsolutePath());
-		}
-		if (casesId != null && !casesId.isEmpty()) {
-			args.add("--case=" + StringUtils.join(casesId, ","));
-		}
-		args.add("--export=json");
-		args.add(workingDirectory.getAbsolutePath());
+		List<String> args = Arrays.asList(
+				"run",
+				"--no-color",
+				(configFile != null) ? "--cpath=" + configFile.getAbsolutePath() : null,
+				(casesId != null && !casesId.isEmpty()) ? "--case=" + StringUtils.join(casesId, ",") : null,
+				"--export=json",
+				workingDirectory.getAbsolutePath()
+			)
+			.stream()
+			.filter(Objects::nonNull)
+			.collect(Collectors.toList());
 		return Ruby.run(BIN_PATH, output, error, outputDirectory, args.toArray(new String[0]));		
 	}
 	

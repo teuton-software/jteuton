@@ -1,4 +1,4 @@
-package io.github.teuton.jteuton.utils;
+package io.github.teuton.jteuton.ruby;
 
 import java.io.IOException;
 import java.io.InputStream;

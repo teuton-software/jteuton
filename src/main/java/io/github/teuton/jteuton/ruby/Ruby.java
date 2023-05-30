@@ -14,9 +14,6 @@ import org.jruby.embed.LocalContextScope;
 import org.jruby.embed.PathType;
 import org.jruby.embed.ScriptingContainer;
 
-import io.github.teuton.jteuton.ExecutionResult;
-import io.github.teuton.jteuton.utils.StreamCharacterConsumer;
-
 public class Ruby {
 	
 	private static final String GEM_PATH = "uri:classloader:/rubygems"; 
