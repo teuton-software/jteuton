@@ -63,7 +63,7 @@ mvn clean:clean@uninstall-rubygems
 ### Reload all Ruby gems
 
 ```bash
-mvn clean:clean@uninstall-rubygems
+mvn clean:clean@uninstall-rubygems exec:exec@install-rubygems
 ```
 
 ## Usage examples:
